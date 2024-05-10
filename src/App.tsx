@@ -1,4 +1,4 @@
-import SimonBtn from "./SimonBtn";
+import SimonBtn from "./components/SimonBtn";
 import { useState, useEffect } from "react";
 
 const colors = ["red", "blue", "green", "yellow"];
