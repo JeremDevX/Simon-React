@@ -1,5 +1,5 @@
 import SimonBtn from "./components/SimonBtn";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 const colors = ["red", "blue", "green", "yellow"];
 
@@ -11,68 +11,16 @@ const sounds: Record<Colorsound, HTMLAudioElement> = {
   yellow: new Audio("https://s3.amazonaws.com/freecodecamp/simonSound4.mp3"),
 };
 
+const addNewColor = () => {
+  const color = colors[Math.floor(Math.random() * 4)];
+  return color;
+};
+
 export default function App() {
   const [sequence, setSequence] = useState<string[]>([]);
-  const [userSequence, setUserSequence] = useState<string[]>([]);
-  const [sequenceIndex, setSequenceIndex] = useState(-1);
+  const [sequenceIndex, setSequenceIndex] = useState(0);
   const [gameStarted, setGameStarted] = useState(false);
-
-  const addNewColor = () => {
-    const color = colors[Math.floor(Math.random() * 4)];
-    const newSequence = [...sequence, color];
-    setSequence(newSequence);
-    setSequenceIndex(-1);
-    setUserSequence([]);
-  };
-
-  function playSound(color: string) {
-    sounds[color as Colorsound].currentTime = 0;
-    sounds[color as Colorsound].play();
-  }
-
-  function playsSequence() {
-    for (let i = 0; i < sequence.length; i++) {
-      setTimeout(() => {
-        const currentButton = document.getElementById(`${sequence[i]}`);
-        playSound(sequence[i]);
-        currentButton?.classList.add("highlight");
-
-        setTimeout(() => {
-          currentButton?.classList.remove("highlight");
-        }, 750);
-      }, i * 1000);
-    }
-  }
-
-  function handleClick(color: string) {
-    if (gameStarted) {
-      const newUserSequence = [...userSequence, color];
-      setUserSequence(newUserSequence);
-    }
-  }
-
-  useEffect(() => {
-    if (gameStarted) {
-      if (userSequence[sequenceIndex] === sequence[sequenceIndex]) {
-        setSequenceIndex(sequenceIndex + 1);
-        if (userSequence.length === sequence.length) {
-          setTimeout(addNewColor, 1000);
-        }
-      } else {
-        alert("You lost!");
-        setSequence([]);
-        setUserSequence([]);
-        setSequenceIndex(-1);
-        setGameStarted(false);
-      }
-    }
-  }, [userSequence, gameStarted]);
-
-  useEffect(() => {
-    if (sequence.length > 0) {
-      playsSequence();
-    }
-  }, [sequence]);
+  const [activeColor, setActiveColor] = useState<string | null>(null);
 
   function playGame() {
     if (!gameStarted) {
@@ -80,47 +28,86 @@ export default function App() {
     }
   }
 
+  function playSound(color: string) {
+    sounds[color as Colorsound].currentTime = 0;
+    sounds[color as Colorsound].play();
+  }
+
+  function playsSequence() {
+    let i = 0;
+
+    const interval = setInterval(() => {
+      playSound(sequence[i]);
+      setActiveColor(sequence[i]);
+      setTimeout(() => {
+        setActiveColor(null);
+      }, 750);
+      i++;
+      if (i >= sequence.length) {
+        clearInterval(interval);
+      }
+    }, 1000);
+  }
+
+  const handleClick = useCallback(
+    (color: string) => {
+      if (gameStarted) {
+        if (sequence[sequenceIndex] === color) {
+          setSequenceIndex(sequenceIndex + 1);
+        } else {
+          alert("You lost!");
+          setSequence([]);
+          setSequenceIndex(0);
+          setGameStarted(false);
+        }
+      }
+    },
+    [sequenceIndex, gameStarted, sequence]
+  );
+
+  useEffect(() => {
+    if (gameStarted) {
+      if (sequence.length === 0) {
+        setSequence([...sequence, addNewColor()]);
+      } else {
+        if (sequence.length === sequenceIndex) {
+          setSequenceIndex(0);
+          setTimeout(() => {
+            setSequence([...sequence, addNewColor()]);
+          }, 1000);
+        }
+      }
+    }
+  }, [gameStarted, sequenceIndex]);
+
+  useEffect(() => {
+    if (gameStarted) {
+      if (sequence.length > 0) {
+        playsSequence();
+      }
+    }
+  }, [gameStarted, sequence]);
+
   return (
     <div className="App">
-      <SimonBtn
-        color="red"
-        id="red"
-        onClick={() => {
-          handleClick("red");
-          playSound("red");
-        }}
-      />
-      <SimonBtn
-        color="blue"
-        id="blue"
-        onClick={() => {
-          handleClick("blue");
-          playSound("blue");
-        }}
-      />
-      <SimonBtn
-        color="green"
-        id="green"
-        onClick={() => {
-          handleClick("green");
-          playSound("green");
-        }}
-      />
-      <SimonBtn
-        color="yellow"
-        id="yellow"
-        onClick={() => {
-          handleClick("yellow");
-          playSound("yellow");
-        }}
-      />
+      {colors.map((color) => (
+        <SimonBtn
+          key={"button" + color}
+          color={color}
+          id={color}
+          onClick={() => {
+            handleClick(color);
+            playSound(color);
+          }}
+          active={activeColor === color}
+        />
+      ))}
       <div className="container">
         <button className="play" onClick={playGame}>
           PLAY
         </button>
         <div className="cheat-test">
           <p className="game-sequence">{`${sequence} `}</p>
-          <p className="user-sequence">{`${userSequence} `}</p>
         </div>
       </div>
     </div>
