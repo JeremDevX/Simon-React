@@ -4,9 +4,9 @@
   border: black 2px solid;
 }
 
-.game-btn:hover,
+.game-btn:active,
 .highlight {
-  filter: brightness(1.4);
+  filter: brightness(0.5);
   border: white 2px solid;
 }
 .highlight {

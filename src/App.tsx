@@ -11,16 +11,17 @@ const sounds: Record<Colorsound, HTMLAudioElement> = {
   yellow: new Audio("https://s3.amazonaws.com/freecodecamp/simonSound4.mp3"),
 };
 
-const addNewColor = () => {
+const getNewColor = () => {
   const color = colors[Math.floor(Math.random() * 4)];
   return color;
 };
 
 export default function App() {
-  const [sequence, setSequence] = useState<string[]>([]);
-  const [sequenceIndex, setSequenceIndex] = useState(0);
-  const [gameStarted, setGameStarted] = useState(false);
-  const [activeColor, setActiveColor] = useState<string | null>(null);
+  const [sequence, setSequence] = useState<string[]>([getNewColor()]);
+  const [sequenceIndex, setSequenceIndex] = useState<number>(0);
+  const [gameStarted, setGameStarted] = useState<boolean>(false);
+  const [iaTurn, setIaTurn] = useState<boolean>(true);
+  const [stopHighlight, setStopHighlight] = useState<boolean>(true);
 
   function playGame() {
     if (!gameStarted) {
@@ -33,60 +34,63 @@ export default function App() {
     sounds[color as Colorsound].play();
   }
 
-  function playsSequence() {
-    let i = 0;
-
-    const interval = setInterval(() => {
-      playSound(sequence[i]);
-      setActiveColor(sequence[i]);
-      setTimeout(() => {
-        setActiveColor(null);
-      }, 750);
-      i++;
-      if (i >= sequence.length) {
-        clearInterval(interval);
-      }
-    }, 1000);
-  }
-
   const handleClick = useCallback(
     (color: string) => {
-      if (gameStarted) {
+      if (gameStarted && !iaTurn) {
         if (sequence[sequenceIndex] === color) {
           setSequenceIndex(sequenceIndex + 1);
         } else {
           alert("You lost!");
-          setSequence([]);
+          setSequence([getNewColor()]);
           setSequenceIndex(0);
           setGameStarted(false);
+          setIaTurn(true);
         }
       }
     },
-    [sequenceIndex, gameStarted, sequence]
+    [sequenceIndex, gameStarted, sequence, iaTurn]
   );
 
   useEffect(() => {
-    if (gameStarted) {
-      if (sequence.length === 0) {
-        setSequence([...sequence, addNewColor()]);
-      } else {
-        if (sequence.length === sequenceIndex) {
+    let waitChangePLayer: number;
+    if (!iaTurn) {
+      if (sequenceIndex === sequence.length) {
+        waitChangePLayer = setTimeout(() => {
+          setIaTurn(true);
           setSequenceIndex(0);
-          setTimeout(() => {
-            setSequence([...sequence, addNewColor()]);
-          }, 1000);
-        }
+          setSequence([...sequence, getNewColor()]);
+        }, 1000);
       }
     }
-  }, [gameStarted, sequenceIndex]);
+    return () => {
+      clearTimeout(waitChangePLayer);
+    };
+  }, [sequence, sequenceIndex, iaTurn]);
 
   useEffect(() => {
-    if (gameStarted) {
-      if (sequence.length > 0) {
-        playsSequence();
+    let stopHighlight: number;
+    let incrementIndex: number;
+    if (gameStarted && iaTurn) {
+      if (sequenceIndex < sequence.length) {
+        playSound(sequence[sequenceIndex]);
+        setStopHighlight(false);
+        stopHighlight = setTimeout(() => {
+          setStopHighlight(true);
+        }, 750);
+        incrementIndex = setTimeout(() => {
+          setSequenceIndex(sequenceIndex + 1);
+        }, 1000);
+      }
+      if (sequenceIndex === sequence.length) {
+        setIaTurn(false);
+        setSequenceIndex(0);
       }
     }
-  }, [gameStarted, sequence]);
+    return () => {
+      clearTimeout(stopHighlight);
+      clearTimeout(incrementIndex);
+    };
+  }, [gameStarted, sequenceIndex, iaTurn, sequence]);
 
   return (
     <div className="App">
@@ -99,7 +103,12 @@ export default function App() {
             handleClick(color);
             playSound(color);
           }}
-          active={activeColor === color}
+          sequence={
+            sequence[sequenceIndex] === color &&
+            iaTurn &&
+            gameStarted &&
+            !stopHighlight
+          }
         />
       ))}
       <div className="container">
@@ -107,7 +116,16 @@ export default function App() {
           PLAY
         </button>
         <div className="cheat-test">
-          <p className="game-sequence">{`${sequence} `}</p>
+          <p className="game-sequence">
+            Cheat Reminder : {`${gameStarted ? sequence : ""} `}
+          </p>
+          <p>
+            <br />
+            <br />
+            <br />
+            <br />
+            {iaTurn ? "IA Turn" : "Player Turn"}
+          </p>
         </div>
       </div>
     </div>
