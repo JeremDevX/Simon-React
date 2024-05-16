@@ -25,7 +25,9 @@ export default function App() {
 
   function playGame() {
     if (!gameStarted) {
-      setGameStarted(true);
+      setTimeout(() => {
+        setGameStarted(true);
+      }, 500);
     } else {
       setSequence([getNewColor()]);
       setSequenceIndex(0);
