@@ -128,7 +128,11 @@ export default function App() {
         >
           {gameStarted ? "Reset" : "Play"}
         </button>
-        <p>{iaTurn ? "IA Turn" : "Player Turn"}</p>{" "}
+        <p>
+          {gameStarted
+            ? `${iaTurn ? "IA Turn" : "Player Turn"}`
+            : "Welcome to Simon Game !"}
+        </p>{" "}
         <div className="cheat">
           <p>
             <br />
