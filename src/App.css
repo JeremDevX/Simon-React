@@ -6,6 +6,9 @@
   width: 320px;
   height: 320px;
   gap: 20px;
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  text-shadow: 2px 1px 0px #000000;
+  font-size: 1.5rem;
 }
 
 .container {
