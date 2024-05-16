@@ -1,34 +1,80 @@
 .game-btn {
   width: 150px;
   height: 150px;
-  border: black 2px solid;
+  outline: 1px solid black;
+  border: none;
+  box-shadow: 0px 0px 15px 10px rgba(0, 0, 0, 0.3);
 }
 
 .game-btn:active,
 .highlight {
-  filter: brightness(0.5);
-  border: white 2px solid;
+  filter: brightness(2);
+  transition: 0.3s;
 }
-.highlight {
-  transform: scale(1.08);
-  transition: filter 0.3s;
-}
+
 .red {
-  background-color: red;
-  border-radius: 50% 0 0 0;
+  /* background-color: rgb(200, 0, 0);*/
+  border-radius: 100% 10% 10% 10%;
+  background-color: #f25022;
+  box-shadow: 0 0 0 1px #f25022 inset, 0 0 0 2px rgba(255, 255, 255, 0.15) inset,
+    0 8px 0 0 #c93a12, 0 8px 0 1px rgba(0, 0, 0, 0.4),
+    0 8px 8px 1px rgba(0, 0, 0, 0.5);
+  transition: 0.15s;
+}
+.red:active {
+  box-shadow: 0 0 0 1px #ff5c36 inset, 0 0 0 2px rgba(255, 255, 255, 0.15) inset,
+    0 0 0 1px rgba(0, 0, 0, 0.4);
+  background-color: #ff5c36;
+  transform: translateY(5px);
+  transition: 0.15s;
 }
 
 .blue {
-  background-color: blue;
-  border-radius: 0 50% 0 0;
+  /* background-color: rgb(0, 0, 200); */
+  border-radius: 10% 100% 10% 10%;
+  background-color: #00a4ef;
+  box-shadow: 0 0 0 1px #00a4ef inset, 0 0 0 2px rgba(255, 255, 255, 0.15) inset,
+    0 8px 0 0 #0883bc, 0 8px 0 1px rgba(0, 0, 0, 0.4),
+    0 8px 8px 1px rgba(0, 0, 0, 0.5);
+  transition: 0.15s;
+}
+.blue:active {
+  box-shadow: 0 0 0 1px #2bbcff inset, 0 0 0 2px rgba(255, 255, 255, 0.15) inset,
+    0 0 0 1px rgba(0, 0, 0, 0.4);
+  background-color: #2bbcff;
+  transform: translateY(5px);
+  transition: 0.15s;
+}
+.yellow {
+  /* background-color: rgb(200, 200, 0); */
+  background-color: #ffb900;
+  box-shadow: 0 0 0 1px #ffb900 inset, 0 0 0 2px rgba(255, 255, 255, 0.15) inset,
+    0 8px 0 0 #c28e07, 0 8px 0 1px rgba(0, 0, 0, 0.4),
+    0 8px 8px 1px rgba(0, 0, 0, 0.5);
+  transition: 0.15s;
+  border-radius: 10% 10% 100% 10%;
+}
+.yellow:active {
+  box-shadow: 0 0 0 1px #ffca3d inset, 0 0 0 2px rgba(255, 255, 255, 0.15) inset,
+    0 0 0 1px rgba(0, 0, 0, 0.4);
+  background-color: #ffca3d;
+  transform: translateY(5px);
+  transition: 0.15s;
 }
 
 .green {
-  background-color: green;
-  border-radius: 0 0 0 50%;
+  /* background-color: rgb(0, 200, 0); */
+  border-radius: 10% 10% 10% 100%;
+  background-color: #7fba00;
+  box-shadow: 0 0 0 1px #7fba00 inset, 0 0 0 2px rgba(255, 255, 255, 0.15) inset,
+    0 8px 0 0 #638f05, 0 8px 0 1px rgba(0, 0, 0, 0.4),
+    0 8px 8px 1px rgba(0, 0, 0, 0.5);
+  transition: 0.15s;
 }
-
-.yellow {
-  background-color: yellow;
-  border-radius: 0 0 50% 0;
+.green:active {
+  box-shadow: 0 0 0 1px #a0ea00 inset, 0 0 0 2px rgba(255, 255, 255, 0.15) inset,
+    0 0 0 1px rgba(0, 0, 0, 0.4);
+  background-color: #a0ea00;
+  transform: translateY(5px);
+  transition: 0.15s;
 }
