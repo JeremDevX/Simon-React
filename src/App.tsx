@@ -26,6 +26,11 @@ export default function App() {
   function playGame() {
     if (!gameStarted) {
       setGameStarted(true);
+    } else {
+      setSequence([getNewColor()]);
+      setSequenceIndex(0);
+      setGameStarted(false);
+      setIaTurn(true);
     }
   }
 
@@ -93,39 +98,42 @@ export default function App() {
   }, [gameStarted, sequenceIndex, iaTurn, sequence]);
 
   return (
-    <div className="App">
-      {colors.map((color) => (
-        <SimonBtn
-          key={"button" + color}
-          color={color}
-          id={color}
-          onClick={() => {
-            handleClick(color);
-            playSound(color);
-          }}
-          sequence={
-            sequence[sequenceIndex] === color &&
-            iaTurn &&
-            gameStarted &&
-            !stopHighlight
-          }
-          style={{ pointerEvents: iaTurn ? "none" : "auto" }}
-        />
-      ))}
+    <div className="main-container">
+      <div className="simon">
+        {colors.map((color) => (
+          <SimonBtn
+            key={"button" + color}
+            color={color}
+            id={color}
+            onClick={() => {
+              handleClick(color);
+              playSound(color);
+            }}
+            sequence={
+              sequence[sequenceIndex] === color &&
+              iaTurn &&
+              gameStarted &&
+              !stopHighlight
+            }
+            style={{ pointerEvents: iaTurn ? "none" : "auto" }}
+          />
+        ))}
+      </div>
       <div className="container">
-        <button className="play" onClick={playGame}>
-          PLAY
+        <button
+          className={`play-btn ${gameStarted ? "reset" : "play"}`}
+          onClick={playGame}
+        >
+          {gameStarted ? "Reset" : "Play"}
         </button>
-        <div className="cheat-test">
-          <p className="game-sequence">
-            Cheat Reminder : {`${gameStarted ? sequence : ""} `}
-          </p>
+        <p>{iaTurn ? "IA Turn" : "Player Turn"}</p>{" "}
+        <div className="cheat">
           <p>
             <br />
             <br />
             <br />
             <br />
-            {iaTurn ? "IA Turn" : "Player Turn"}
+            Cheat Reminder : {`${gameStarted ? sequence : ""} `}
           </p>
         </div>
       </div>

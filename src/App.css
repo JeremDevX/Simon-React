@@ -1,4 +1,13 @@
-.App {
+.main-container {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.simon {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -6,9 +15,9 @@
   width: 320px;
   height: 320px;
   gap: 20px;
-  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
-  text-shadow: 2px 1px 0px #000000;
-  font-size: 1.5rem;
+  margin-top: 35px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .container {
@@ -17,9 +26,45 @@
   justify-content: center;
   text-align: center;
   align-items: center;
+  margin-top: 30px;
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  text-shadow: 2px 1px 0px #000000;
+  font-size: 1.5rem;
 }
 
+.cheat {
+  width: 500px;
+  height: auto;
+}
 .play {
+  background-color: green;
+  animation: shine 2s linear infinite;
+}
+
+.reset {
+  background-color: red;
+}
+
+.play-btn {
+  cursor: pointer;
   width: 150px;
   height: 50px;
+  border: 2px solid black;
+  border-radius: 15px;
+  color: white;
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  text-shadow: 2px 1px 0px #000000;
+  font-size: 1.5rem;
+}
+
+@keyframes shine {
+  0% {
+    filter: brightness(0.6);
+  }
+  50% {
+    filter: brightness(1);
+  }
+  100% {
+    filter: brightness(0.6);
+  }
 }
