@@ -3,6 +3,7 @@ interface SimonBtnProps {
   onClick: () => void;
   id: string;
   sequence: boolean;
+  style: React.CSSProperties;
 }
 
 export default function SimonBtn(props: SimonBtnProps) {
@@ -12,6 +13,7 @@ export default function SimonBtn(props: SimonBtnProps) {
       className={`game-btn ${props.color} ${highlight}`}
       id={props.id}
       onClick={props.onClick}
+      style={props.style}
     ></button>
   );
 }

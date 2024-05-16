@@ -109,6 +109,7 @@ export default function App() {
             gameStarted &&
             !stopHighlight
           }
+          style={{ pointerEvents: iaTurn ? "none" : "auto" }}
         />
       ))}
       <div className="container">
