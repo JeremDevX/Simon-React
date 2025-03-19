@@ -1,0 +1,6 @@
+{
+  "description": {
+    "fr": "<h2>Jeu de Simon</h2> <h3>Description</h3> <p>Reproduction du célèbre jeu « Simon » réalisée avec React, dans l’objectif d’apprendre et comprendre les concepts fondamentaux de cette bibliothèque JavaScript.</p>\n<h3>Fonctionnalités principales :</h3>\n<ul>\n<li>Logique de jeu interactive basée sur la mémoire</li>\n<li>Gestion d’état basique (useState, useEffect)</li>\n<li>Interface utilisateur simple et intuitive</li>\n\n</ul>\n<h3>Technologies utilisées :</h3>\n<ul>\n<li>React</li>\n<li>CSS</li>\n\n</ul>",
+    "en": "<h2>Simon game</h2>\n<h3>Description</h3> <p>A simple React implementation of the classic memory game “Simon”, built to understand and practice fundamental React concepts.</p>\n<h3>Key features:</h3>\n<ul>\n<li>Interactive memory-based gameplay logic</li>\n<li>Basic state management (useState, useEffect)</li>\n<li>Simple and intuitive user interface</li>\n</ul>\n<h3>Built with :</h3>\n<ul>\n<li>React</li>\n<li>CSS</li>\n\n</ul>"
+  }
+}
